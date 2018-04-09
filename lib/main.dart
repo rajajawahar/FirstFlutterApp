@@ -161,7 +161,7 @@ class RandomWordsState extends State<RandomWords> {
 
         return new Scaffold(
           appBar: new AppBar(
-            title: new Text('Saved Suggestions'),
+            title: new Text('Second Page'),
           ),
           body: new ListView(children: divided),
         );
@@ -169,14 +169,28 @@ class RandomWordsState extends State<RandomWords> {
     ),
   );
   }
-  Widget _buildRow(WordPair pair) {
-    return new ListTile(
-      title: new Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-    );
-  }
+ Widget _buildRow(WordPair pair) {
+  final alreadySaved = _saved.contains(pair);
+  return new ListTile(
+    title: new Text(
+      pair.asPascalCase,
+      style: _biggerFont,
+    ),
+    trailing: new Icon(
+      alreadySaved ? Icons.favorite : Icons.favorite_border,
+      color: alreadySaved ? Colors.red : null,
+    ),
+    onTap: () {
+      setState(() {
+        if (alreadySaved) {
+          _saved.remove(pair);
+        } else {
+          _saved.add(pair);
+        }
+      });
+    },
+  );
+}
 }
 
 
