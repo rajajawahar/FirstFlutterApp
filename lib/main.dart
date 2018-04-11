@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'package:loginflutter/loginpage.dart';
 
 
 void main() => runApp(new MyApp());
@@ -9,8 +10,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      return new MaterialApp(
-      title: 'ListView Generator',
-      home: new RandomWords(),
+      title: 'Flutter Demo',
+      theme: new ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: new LoginPage(),
     );
   }
 }
@@ -95,6 +99,45 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: new Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+
+class ExampleWidget extends StatefulWidget {
+  ExampleWidget({Key key}) : super(key: key);
+
+  @override
+  _ExampleWidgetState createState() => new _ExampleWidgetState();
+}
+
+class _ExampleWidgetState extends State<ExampleWidget> {
+  final TextEditingController _controller = new TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return new Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        new TextField(
+          controller: _controller,
+          decoration: new InputDecoration(
+            hintText: 'Type something',
+          ),
+        ),
+        new RaisedButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              child: new AlertDialog(
+                title: new Text('What you typed'),
+                content: new Text(_controller.text),
+              ),
+            );
+          },
+          child: new Text('DONE'),
+        ),
+      ],
     );
   }
 }
