@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-import 'package:loginflutter/loginpage.dart';
+import 'package:loginflutter/formpage.dart';
 
 
 void main() => runApp(new MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new LoginPage(),
+      home: new FormPage(),
     );
   }
 }

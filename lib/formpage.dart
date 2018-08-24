@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
-class LoginPage extends StatefulWidget {
+class FormPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  FormPageState createState() => new FormPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class FormPageState extends State<FormPage> {
+  Future<SharedPreferences> preferences = SharedPreferences.getInstance();
+
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   final formKey = new GlobalKey<FormState>();
 
-  String _email;
+  String _email = "Raja Mohamed";
   String _password;
 
   void _submit() {
@@ -24,13 +28,16 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _performLogin() {
+  void _performLogin() async {
     // This is just a demo, so no actual login here.
-    final snackbar = new SnackBar(
-      content: new Text('Email: $_email, password: $_password'),
-    );
+    final SharedPreferences prefs = await preferences;
+    prefs.setString("email", _email);
+    prefs.setString("password", _password);
+  }
 
-    scaffoldKey.currentState.showSnackBar(snackbar);
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -47,26 +54,39 @@ class _LoginPageState extends State<LoginPage> {
           child: new Column(
             children: [
               new TextFormField(
+                initialValue: _email,
                 decoration: new InputDecoration(labelText: 'Your email'),
-                validator: (val) =>
-                !val.contains('@') ? 'Not a valid email.' : null,
-                onSaved: (val) => _email = val,
+                validator: (val) {
+                  return !val.contains('@') ? 'Not a valid email.' : null;
+                },
+                onSaved: (val) async {
+                  return _email = val;
+                },
               ),
               new TextFormField(
+                initialValue: _password,
                 decoration: new InputDecoration(labelText: 'Your password'),
                 validator: (val) =>
-                val.length < 6 ? 'Password too short.' : null,
+                    val.length < 6 ? 'Password too short.' : null,
                 onSaved: (val) => _password = val,
                 obscureText: true,
               ),
               new RaisedButton(
                 onPressed: _submit,
-                child: new Text('Login'),
+                child: new Text('SAVE'),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void loadPreferencesValues() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _email = prefs.get("email");
+    _password = prefs.get("password");
+    print(_email);
+    print(_password);
   }
 }
